@@ -42,7 +42,6 @@ public class SimpleController {
         return authService.signin(signInRequest);
     }
 
-    // TODO: refresh token 재발급 절차 완성
     @GetMapping("/refresh")
     public ReissuedToken refresh(@Login final AuthInfo authInfo, final HttpServletRequest request) {
         System.out.println(authInfo.getRole());

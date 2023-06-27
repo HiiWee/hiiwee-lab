@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .cors().and()
                 .exceptionHandling()
                 // TODO 인증, 인간 실패시 예외 처리를 @ExceptionHandler를 통해 처리할 수 있도록 변경
+                // TODO 각 코드에 설명 주석 달기
                 // 인증 실패시 예외 처리
                 .authenticationEntryPoint((request, response, authException) -> {
                     ErrorResponse errorResponse = new ErrorResponse("필터 반환 : 인증된 사용자가 아닙니다.");
