@@ -2,6 +2,7 @@ package com.example.springsecurity.auth.service;
 
 import com.example.springsecurity.auth.domain.RefreshToken;
 import com.example.springsecurity.auth.dto.AuthInfo;
+import com.example.springsecurity.auth.dto.ReissuedTokenResponse;
 import com.example.springsecurity.auth.dto.SignInRequest;
 import com.example.springsecurity.auth.dto.TokenResponse;
 import com.example.springsecurity.support.token.JwtTokenProvider;
@@ -54,8 +55,9 @@ public class AuthService {
         savedToken.validateSameToken(token);
     }
 
-    public String reissueAccessToken(final AuthInfo authInfo, final String refreshToken) {
+    public ReissuedTokenResponse reissueAccessToken(final AuthInfo authInfo, final String refreshToken) {
         matches(authInfo.getId(), refreshToken);
-        return tokenProvider.createAccessToken(authInfo);
+        String reissuedAccessToken = tokenProvider.createAccessToken(authInfo);
+        return new ReissuedTokenResponse(reissuedAccessToken);
     }
 }

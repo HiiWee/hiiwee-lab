@@ -10,6 +10,7 @@ import com.example.springsecurity.support.token.Login;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,10 +31,11 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public ReissuedTokenResponse refresh(@Login final AuthInfo authInfo, final HttpServletRequest request) {
+    public ResponseEntity<ReissuedTokenResponse> refresh(@Login final AuthInfo authInfo, final HttpServletRequest request) {
         validateExistHeader(request);
         String refreshToken = AuthorizationExtractor.extractRefreshToken(request);
-        return new ReissuedTokenResponse(authService.reissueAccessToken(authInfo, refreshToken));
+        ReissuedTokenResponse reissuedTokenResponse = authService.reissueAccessToken(authInfo, refreshToken);
+        return ResponseEntity.ok(reissuedTokenResponse);
     }
 
     @GetMapping("/hello")

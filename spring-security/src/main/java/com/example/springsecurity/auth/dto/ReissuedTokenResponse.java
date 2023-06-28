@@ -5,7 +5,10 @@ import lombok.Getter;
 @Getter
 public class ReissuedTokenResponse {
 
-    private final String accessToken;
+    private String accessToken;
+
+    private ReissuedTokenResponse() {
+    }
 
     public ReissuedTokenResponse(final String accessToken) {
         this.accessToken = accessToken;

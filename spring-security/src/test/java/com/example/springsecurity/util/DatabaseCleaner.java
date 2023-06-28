@@ -52,7 +52,7 @@ public class DatabaseCleaner implements InitializingBean {
 
     @Transactional
     public void insertInitialData() {
-        String encryptedPassword = passwordEncoder.encode("!qwer123");
+        String encryptedPassword = passwordEncoder.encode("1234");
         entityManager.createNativeQuery(
                         "insert into member(name, password, role) values('hoseok', '" + encryptedPassword + "', 'USER')")
                 .executeUpdate();

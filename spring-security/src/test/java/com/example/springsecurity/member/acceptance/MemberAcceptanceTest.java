@@ -20,6 +20,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     void signup() {
         // given
         SignUpRequest signUpRequest = new SignUpRequest("hoseok1", "1234");
+
+        // when
         ExtractableResponse<Response> response = given().log().all()
                 .body(signUpRequest)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -27,8 +29,6 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .post("/members/signup")
                 .then().log().all()
                 .extract();
-
-        // when
         SignUpResponse signUpResponse = response.jsonPath().getObject(".", SignUpResponse.class);
 
         // then
