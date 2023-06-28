@@ -1,6 +1,6 @@
 package com.example.springsecurity.support.token;
 
-import com.example.springsecurity.dto.AuthInfo;
+import com.example.springsecurity.auth.dto.AuthInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -12,7 +12,6 @@ import io.jsonwebtoken.security.SignatureException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +31,7 @@ public class JwtTokenProvider {
 
     private static final String AUTHORIZATION_ID = "id";
     private static final String AUTHORIZATION = "auth";
+    public static final String EMPTY_VALUE = "";
 
     private final Key signingKey;
     private final long validityMilliseconds;
@@ -54,6 +54,7 @@ public class JwtTokenProvider {
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityMilliseconds);
+
         return Jwts.builder()
                 .claim(AUTHORIZATION_ID, authentication.getName())
                 .claim(AUTHORIZATION, authorities)
@@ -79,6 +80,7 @@ public class JwtTokenProvider {
     public String createRefreshToken() {
         Date now = new Date();
         Date validity = new Date(now.getTime() + refreshTokenValidityMilliseconds);
+
         return Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(validity)
@@ -87,40 +89,34 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(final String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(signingKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
+        Claims claims = parseClaimsBody(token);
         if (claims.get(AUTHORIZATION) == null) {
-            throw new IllegalArgumentException("권한 정보가 없습니다.");
+            throw new IllegalArgumentException("사용자 역할(role)이 존재하지 않습니다.");
         }
 
-        List<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get(AUTHORIZATION)
-                        .toString()
-                        .split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-        UserDetails principal = new User((String) claims.get(AUTHORIZATION_ID), "", authorities);
+        List<SimpleGrantedAuthority> authorities = getSplitedAuthorities(claims);
+        UserDetails principal = User.builder()
+                .username((String) claims.get(AUTHORIZATION_ID))
+                .password(EMPTY_VALUE)
+                .authorities(authorities)
+                .build();
 
         // Security Context에 담을 Authentication 구현체를 생성합니다. 이때 JWT에 포함되어 있는 정보를 이용해 필요 객체들을 생성합니다.
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+        return new UsernamePasswordAuthenticationToken(principal, null, authorities);
     }
 
     public AuthInfo getParsedClaims(final String token) {
-        Authentication authentication = getAuthentication(token);
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        Long id = Long.parseLong(authentication.getName());
-        String role = authorities.stream()
-                .map(GrantedAuthority::getAuthority)
-                .filter(authority -> authority.equals("USER") || authority.equals("ADMIN"))
-                .findAny()
-                .orElseThrow(() -> new IllegalStateException("사용자의 역할을 찾을 수 없습니다."));
-
-        return new AuthInfo(id, role);
+        Claims claims;
+        try {
+            claims = parseClaimsBody(token);
+        } catch (ExpiredJwtException e) {
+            Long id = Long.parseLong((String) e.getClaims().get(AUTHORIZATION_ID));
+            String authorities = (String) e.getClaims().get(AUTHORIZATION);
+            return AuthInfo.of(id, authorities);
+        }
+        Long id = Long.parseLong((String) claims.get(AUTHORIZATION_ID));
+        String authorities = (String) claims.get(AUTHORIZATION);
+        return AuthInfo.of(id, authorities);
     }
 
     public boolean validateToken(final String token) {
@@ -143,5 +139,21 @@ public class JwtTokenProvider {
             log.info("Invalid JWT signature : {}", token);
             throw new JwtException("잘못된 JWT 시그니처");
         }
+    }
+
+    private Claims parseClaimsBody(final String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(signingKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    private List<SimpleGrantedAuthority> getSplitedAuthorities(final Claims claims) {
+        return Arrays.stream(claims.get(AUTHORIZATION)
+                        .toString()
+                        .split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 }

@@ -1,7 +1,7 @@
-package com.example.springsecurity.service;
+package com.example.springsecurity.auth.service;
 
-import com.example.springsecurity.domain.Member;
-import com.example.springsecurity.respository.MemberRepository;
+import com.example.springsecurity.member.domain.Member;
+import com.example.springsecurity.member.repository.MemberRepository;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;

@@ -1,6 +1,6 @@
-package com.example.springsecurity.respository;
+package com.example.springsecurity.auth.respository;
 
-import com.example.springsecurity.domain.RefreshToken;
+import com.example.springsecurity.auth.domain.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {

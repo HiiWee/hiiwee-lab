@@ -1,4 +1,4 @@
-package com.example.springsecurity.domain;
+package com.example.springsecurity.member.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

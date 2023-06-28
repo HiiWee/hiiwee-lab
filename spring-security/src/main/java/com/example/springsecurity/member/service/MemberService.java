@@ -1,9 +1,9 @@
-package com.example.springsecurity.service;
+package com.example.springsecurity.member.service;
 
-import com.example.springsecurity.domain.Member;
-import com.example.springsecurity.domain.Role;
-import com.example.springsecurity.dto.SignUpRequest;
-import com.example.springsecurity.respository.MemberRepository;
+import com.example.springsecurity.member.domain.Member;
+import com.example.springsecurity.member.domain.Role;
+import com.example.springsecurity.member.dto.SignUpRequest;
+import com.example.springsecurity.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

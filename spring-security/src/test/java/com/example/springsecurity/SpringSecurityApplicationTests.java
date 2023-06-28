@@ -10,4 +10,14 @@ class SpringSecurityApplicationTests {
     void contextLoads() {
     }
 
+    enum A {
+        AB, CD
+    }
+
+
+    @Test
+    void enumName() {
+        System.out.println(A.AB.name());
+    }
+
 }

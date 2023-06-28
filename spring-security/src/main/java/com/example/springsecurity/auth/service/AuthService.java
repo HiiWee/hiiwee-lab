@@ -1,9 +1,9 @@
-package com.example.springsecurity.service;
+package com.example.springsecurity.auth.service;
 
-import com.example.springsecurity.domain.RefreshToken;
-import com.example.springsecurity.dto.AuthInfo;
-import com.example.springsecurity.dto.SignInRequest;
-import com.example.springsecurity.dto.TokenResponse;
+import com.example.springsecurity.auth.domain.RefreshToken;
+import com.example.springsecurity.auth.dto.AuthInfo;
+import com.example.springsecurity.auth.dto.SignInRequest;
+import com.example.springsecurity.auth.dto.TokenResponse;
 import com.example.springsecurity.support.token.JwtTokenProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -45,7 +45,7 @@ public class AuthService {
     }
 
     public void matches(final Long memberId, final String token) {
-        RefreshToken savedToken = refreshTokenService.findRefreshTokenById(memberId);
+        RefreshToken savedToken = refreshTokenService.findRefreshTokenByMemberId(memberId);
 
         if (!tokenProvider.validateToken(savedToken.getToken())) {
             refreshTokenService.deleteToken(savedToken.getMemberId());

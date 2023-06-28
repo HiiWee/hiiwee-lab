@@ -1,7 +1,7 @@
-package com.example.springsecurity.service;
+package com.example.springsecurity.auth.service;
 
-import com.example.springsecurity.domain.RefreshToken;
-import com.example.springsecurity.respository.RefreshTokenRepository;
+import com.example.springsecurity.auth.domain.RefreshToken;
+import com.example.springsecurity.auth.respository.RefreshTokenRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +27,8 @@ public class RefreshTokenService {
         refreshTokenRepository.deleteByMemberId(memberId);
     }
 
-    public RefreshToken findRefreshTokenById(final Long id) {
-        System.out.println(id);
-        return refreshTokenRepository.findById(id)
+    public RefreshToken findRefreshTokenByMemberId(final Long memberId) {
+        return refreshTokenRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리프레시 토큰입니다."));
     }
 }
