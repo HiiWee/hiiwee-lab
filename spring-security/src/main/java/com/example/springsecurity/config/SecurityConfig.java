@@ -37,7 +37,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // CSRwF 설정 Disable
+        // CSRF 설정 Disable
         http.csrf().disable()
                 .cors().and()
                 .exceptionHandling()
@@ -53,8 +53,7 @@ public class SecurityConfig {
                 // 로그인, 회원가입 API는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/hello").hasRole("ADMIN")
+                .antMatchers("/signin").permitAll()
                 .antMatchers("/members/signup").permitAll()
                 .anyRequest().authenticated()
                 .and()

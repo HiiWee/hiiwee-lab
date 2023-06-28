@@ -15,7 +15,7 @@ public class TokenFixture {
                 .body(signInRequest)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .post("/auth/signin")
+                .post("/signin")
                 .then().log().all()
                 .extract()
                 .jsonPath()

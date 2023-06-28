@@ -5,7 +5,10 @@ import lombok.Getter;
 @Getter
 public class ErrorResponse {
 
-    private final String message;
+    private String message;
+
+    private ErrorResponse() {
+    }
 
     public ErrorResponse(final String message) {
         this.message = message;

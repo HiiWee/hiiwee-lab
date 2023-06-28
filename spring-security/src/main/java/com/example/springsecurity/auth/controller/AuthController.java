@@ -25,9 +25,9 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/auth/signin")
-    public TokenResponse signIn(@RequestBody final SignInRequest signInRequest) {
-        return authService.signin(signInRequest);
+    @PostMapping("/signin")
+    public TokenResponse login(@RequestBody final SignInRequest signInRequest) {
+        return authService.login(signInRequest);
     }
 
     @GetMapping("/refresh")
@@ -37,6 +37,12 @@ public class AuthController {
         String refreshToken = AuthorizationExtractor.extractRefreshToken(request);
         ReissuedTokenResponse reissuedTokenResponse = authService.reissueAccessToken(authInfo, refreshToken);
         return ResponseEntity.ok(reissuedTokenResponse);
+    }
+
+    @GetMapping("/signout")
+    public ResponseEntity<Void> logout(@Login AuthInfo authInfo) {
+        authService.logout(authInfo);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/hello")
