@@ -7,6 +7,9 @@ public class SignUpResponse {
 
     private Long memberId;
 
+    private SignUpResponse() {
+    }
+
     public SignUpResponse(final Long memberId) {
         this.memberId = memberId;
     }

@@ -20,8 +20,8 @@ public class MemberController {
 
     @PostMapping("/members/signup")
     public ResponseEntity<SignUpResponse> signup(@RequestBody final SignUpRequest signUpRequest) {
-        Long memberId = memberService.signup(signUpRequest);
+        SignUpResponse signUpResponse = memberService.signup(signUpRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new SignUpResponse(memberId));
+                .body(signUpResponse);
     }
 }

@@ -3,6 +3,7 @@ package com.example.springsecurity.member.service;
 import com.example.springsecurity.member.domain.Member;
 import com.example.springsecurity.member.domain.Role;
 import com.example.springsecurity.member.dto.SignUpRequest;
+import com.example.springsecurity.member.dto.SignUpResponse;
 import com.example.springsecurity.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,13 @@ public class MemberService {
     }
 
     @Transactional
-    public Long signup(final SignUpRequest signUpRequest) {
+    public SignUpResponse signup(final SignUpRequest signUpRequest) {
         if (memberRepository.existsByName(signUpRequest.getName())) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
         Member member = new Member(signUpRequest.getName(), passwordEncoder.encode(signUpRequest.getPassword()),
                 Role.USER);
         memberRepository.save(member);
-        return member.getId();
+        return new SignUpResponse(member.getId());
     }
 }
