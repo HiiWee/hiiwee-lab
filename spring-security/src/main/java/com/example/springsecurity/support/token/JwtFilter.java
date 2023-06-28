@@ -30,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = resolveToken(bearerToken);
 
         // 토큰이 정상 조회 및 유효하다면 해당 토큰을 통해 Authentication 객체를 생성해서 시큐리티 컨텍스트에 저장합니다 (전역 사용 가능)
-        // TODO: JWT 토큰 검증에서 발생하는 예외에 대해서 어떻게 처리할것인가? (필터에서 발생하는 예외)
+        // TODO: JWT 토큰 검증에서 발생하는 예외에 대해서 어떻게 처리할것인가? (필터에서 발생하는 예외) -> JwtFilter 앞단에 예외 처리용 필터 등록하기
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext()

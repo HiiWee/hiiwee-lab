@@ -94,7 +94,7 @@ public class JwtTokenProvider {
             throw new IllegalArgumentException("사용자 역할(role)이 존재하지 않습니다.");
         }
 
-        List<SimpleGrantedAuthority> authorities = getSplitedAuthorities(claims);
+        List<SimpleGrantedAuthority> authorities = getSeparatedAuthorities(claims);
         UserDetails principal = User.builder()
                 .username((String) claims.get(AUTHORIZATION_ID))
                 .password(EMPTY_VALUE)
@@ -149,7 +149,7 @@ public class JwtTokenProvider {
                 .getBody();
     }
 
-    private List<SimpleGrantedAuthority> getSplitedAuthorities(final Claims claims) {
+    private List<SimpleGrantedAuthority> getSeparatedAuthorities(final Claims claims) {
         return Arrays.stream(claims.get(AUTHORIZATION)
                         .toString()
                         .split(","))

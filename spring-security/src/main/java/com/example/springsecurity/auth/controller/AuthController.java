@@ -31,7 +31,8 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<ReissuedTokenResponse> refresh(@Login final AuthInfo authInfo, final HttpServletRequest request) {
+    public ResponseEntity<ReissuedTokenResponse> refresh(@Login final AuthInfo authInfo,
+                                                         final HttpServletRequest request) {
         validateExistHeader(request);
         String refreshToken = AuthorizationExtractor.extractRefreshToken(request);
         ReissuedTokenResponse reissuedTokenResponse = authService.reissueAccessToken(authInfo, refreshToken);
