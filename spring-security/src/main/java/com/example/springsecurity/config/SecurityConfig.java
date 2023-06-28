@@ -41,7 +41,6 @@ public class SecurityConfig {
         http.csrf().disable()
                 .cors().and()
                 .exceptionHandling()
-                // TODO 각 코드에 설명 주석 달기
                 // 인증 실패시 예외 처리(사용자가 인증되지 않음)
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint(mapper))
                 // 인가 실패시 예외 처리 (허락되지 않은 접근)
