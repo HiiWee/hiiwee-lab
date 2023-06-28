@@ -5,10 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import lombok.Getter;
 
 @Entity
-@Getter
 public class RefreshToken {
 
     @Id
@@ -20,12 +18,20 @@ public class RefreshToken {
 
     private String token;
 
-    public RefreshToken() {
+    protected RefreshToken() {
     }
 
     public RefreshToken(final Long memberId, final String token) {
         this.memberId = memberId;
         this.token = token;
+    }
+
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public void validateSameToken(final String token) {
