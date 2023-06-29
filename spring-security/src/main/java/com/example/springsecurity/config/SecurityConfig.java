@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .antMatchers("/members/signup").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .apply(new JwtSecurityConfig(jwtTokenProvider))
+                .apply(new JwtSecurityConfig(jwtTokenProvider, mapper))
                 .and()
                 .formLogin().disable();
         return http.build();
