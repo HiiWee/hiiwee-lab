@@ -25,6 +25,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+/**
+ * JWT를 생성 및 검증하는 Provider 클래스
+ */
 @Slf4j
 @Component
 public class JwtTokenProvider {

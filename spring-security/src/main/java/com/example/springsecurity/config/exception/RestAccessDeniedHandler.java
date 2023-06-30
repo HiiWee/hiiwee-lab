@@ -9,6 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+/**
+ * 인가 예외가 발생하면 예외 이후 동작으로 handle()메서드를 실행 시킵니다.
+ */
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper mapper;

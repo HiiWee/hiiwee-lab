@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/**
+ * JwtFilter에서 발생하는 예외를 인증 예외로 합쳐서 응답하지 않고 각각 응답하도록 하는 예외 필터
+ */
 public class JwtExceptionFilter extends OncePerRequestFilter {
 
     private final ObjectMapper mapper;

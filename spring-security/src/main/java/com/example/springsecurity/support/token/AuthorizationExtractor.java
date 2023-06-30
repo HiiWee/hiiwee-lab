@@ -4,6 +4,9 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * JWT Token Parsing util
+ */
 public class AuthorizationExtractor {
 
     public static final String BEARER_TYPE = "Bearer";

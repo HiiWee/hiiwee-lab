@@ -7,6 +7,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+/**
+ * @Login 이 붙은 Controller 파라미터를 resolving하는 ArgumentResolver
+ */
 public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final JwtTokenProvider jwtTokenProvider;

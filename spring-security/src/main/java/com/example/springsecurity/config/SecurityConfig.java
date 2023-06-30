@@ -13,6 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * 전체적인 Spring Security에 대한 설정을 담당
+ */
 @Configuration
 public class SecurityConfig {
 

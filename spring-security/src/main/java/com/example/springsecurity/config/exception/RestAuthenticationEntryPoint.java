@@ -9,6 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
+/**
+ * 인증 예외가 발생하면 예외 이후 동작으로 commence 메서드를 실행시킵니다.
+ */
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper mapper;

@@ -12,6 +12,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * UserDetailsService로 사용자가 입력한 로그인 요청과 비교하기 위한 실제 DB의 객체를 조회해서 UserDetails Type으로 넘겨줍니다.
+ * UserDetails 인터페이스를 커스텀하게 구성하여 필요한 정보를 더 담을 수 있습니다.
+ */
 @Service
 @Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
