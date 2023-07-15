@@ -39,4 +39,8 @@ public class RefreshToken {
             throw new IllegalArgumentException("유효하지 않은 리프레시 토큰입니다.");
         }
     }
+
+    public void updateToken(final String token) {
+        this.token = token;
+    }
 }
