@@ -7,6 +7,7 @@ import com.example.springsecurity.member.domain.Role;
 import com.example.springsecurity.member.domain.SocialType;
 import com.example.springsecurity.member.repository.MemberRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -32,21 +33,30 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
     @Transactional
     public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        SocialType socialType = SocialType.valueOf(
-                userRequest.getClientRegistration().getRegistrationId().toUpperCase());
-        Oauth2UserInfo oauth2UserInfo = Oauth2UserInfoFactory.getOauth2UserInfo(socialType,
-                oAuth2User.getAttributes());
-        validateOauthUserInfo(oauth2UserInfo);
-        if (!memberRepository.existsByEmailAndSocialId(oauth2UserInfo.getEmail(), oauth2UserInfo.getSocialId())) {
-            registerNewMember(oauth2UserInfo, socialType);
-        }
-        updateExistingMember(oauth2UserInfo);
 
-        return createOauth2User(oauth2UserInfo);
+        SocialType socialType = getSocialType(userRequest);
+        Oauth2UserInfo oauth2UserInfo = Oauth2UserInfoFactory.getOauth2UserInfo(socialType, oAuth2User);
+        validateOauthUserInfo(oauth2UserInfo);
+
+        Optional<Member> findMember = findMemberObject(oauth2UserInfo);
+        if (findMember.isEmpty()) {
+            registerNewMember(oauth2UserInfo, socialType);
+            Member savedMember = findMemberObject(oauth2UserInfo).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+            return createOauth2User(savedMember);
+        }
+        updateExistingMember(findMember.get(), oauth2UserInfo);
+        return createOauth2User(findMember.get());
     }
 
-    private Oauth2UserPrincipal createOauth2User(final Oauth2UserInfo oauth2UserInfo) {
-        Member member = memberRepository.findByEmail(oauth2UserInfo.getEmail()).get();
+    private Optional<Member> findMemberObject(final Oauth2UserInfo oauth2UserInfo) {
+        return memberRepository.findByEmailAndSocialId(oauth2UserInfo.getEmail(), oauth2UserInfo.getSocialId());
+    }
+
+    private static SocialType getSocialType(final OAuth2UserRequest userRequest) {
+        return SocialType.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
+    }
+
+    private Oauth2UserPrincipal createOauth2User(final Member member) {
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(member.getRole().toString());
         return Oauth2UserPrincipal.builder()
                 .memberId(member.getId())
@@ -54,9 +64,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
                 .build();
     }
 
-    private void updateExistingMember(final Oauth2UserInfo oauth2UserInfo) {
-        Member member = memberRepository.findByEmail(oauth2UserInfo.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
+    private void updateExistingMember(final Member member, final Oauth2UserInfo oauth2UserInfo) {
         member.updateName(oauth2UserInfo.getName());
         member.updateImageUrl(oauth2UserInfo.getImageUrl());
     }

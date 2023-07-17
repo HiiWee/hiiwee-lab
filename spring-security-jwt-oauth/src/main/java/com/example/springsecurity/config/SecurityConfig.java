@@ -63,21 +63,24 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // CSRF 설정 Disable
+        // CSRF 설정, 폼 로그인 끄기, cors 적용
         http.csrf().disable()
                 .formLogin().disable()
                 .cors()
                 .and()
 
+                // 인증, 인가 실패시 동작할 핸들러 설정
                 .exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint(mapper))
                 .accessDeniedHandler(new RestAccessDeniedHandler(mapper))
                 .and()
 
+                // JWT 토큰 사용하므로 Session OFF
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
 
+                // 허용 및 비허용할 uri 등록
                 .authorizeRequests()
                 .antMatchers("/signin").permitAll()
                 .antMatchers("/members/signup").permitAll()
@@ -85,9 +88,11 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
                 .and()
 
+                // JWT 설정 등록 (jwt 필터 및 jwt 예외 처리용 필터 등록됨)
                 .apply(new JwtSecurityConfig(jwtTokenProvider, mapper))
                 .and()
 
+                // Oauth2 설정
                 .oauth2Login()
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorize")
