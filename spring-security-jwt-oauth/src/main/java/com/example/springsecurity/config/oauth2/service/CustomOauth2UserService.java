@@ -41,7 +41,8 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
         Optional<Member> findMember = findMemberObject(oauth2UserInfo);
         if (findMember.isEmpty()) {
             registerNewMember(oauth2UserInfo, socialType);
-            Member savedMember = findMemberObject(oauth2UserInfo).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+            Member savedMember = findMemberObject(oauth2UserInfo).orElseThrow(
+                    () -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
             return createOauth2User(savedMember);
         }
         updateExistingMember(findMember.get(), oauth2UserInfo);
