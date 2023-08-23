@@ -1,0 +1,44 @@
+name: github-action-docker
+on:
+  push:
+    branches:
+      - deploy
+    paths: 'github-action-docker/**'
+  workflow_dispatch: # (2) 수동 실행
+defaults:
+  run:
+    working-directory: github-action-docker
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 저장소 Checkout
+        uses: actions/checkout@v3
+
+      - name: 스프링 부트 애플리케이션 빌드
+        run: ./gradlew clean build
+
+      - name: 도커 이미지 빌드
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-basic-image
+
+      - name: Docker Hub 로그인
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Docker Hub 퍼블리시
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-basic-image
+
+      - name: WAS 인스턴스 접속 및 애플리케이션 실행
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.AWS_SSH_HOST }}
+          username: ${{ secrets.AWS_SSH_USERNAME }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          script: |
+            docker stop $(docker ps -a -q) 
+            docker rm $(docker ps -a -q) 
+            docker pull hiiwee/spring-boot-basic-image
+            docker run -d -p 8080:8080 --name spring-boot-basic-container ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-basic-image
