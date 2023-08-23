@@ -41,4 +41,4 @@ jobs:
             docker stop $(docker ps -a -q) 
             docker rm $(docker ps -a -q) 
             docker pull hiiwee/spring-boot-basic-image
-            docker run -d -p 8080:8080 --name spring-boot-basic-container ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-basic-image
+            docker run -d -p 80:8080 --name spring-boot-basic-container ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-basic-image
