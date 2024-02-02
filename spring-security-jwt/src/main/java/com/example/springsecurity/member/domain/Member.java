@@ -45,7 +45,7 @@ public class Member {
         return password;
     }
 
-    public Role getRole() {
-        return role;
+    public String getRole() {
+        return role.getValue();
     }
 }

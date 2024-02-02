@@ -85,6 +85,7 @@ public class SecurityConfig {
                 .antMatchers("/signin").permitAll()
                 .antMatchers("/members/signup").permitAll()
                 .antMatchers("/auth/**", "/oauth2/**").permitAll()
+                .antMatchers("/hello").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
 

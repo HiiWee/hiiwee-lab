@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Member member = memberRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(member.getRole().toString());
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(member.getRole());
         return User.builder()
                 // UserDetails의 구현체인 User에 id 값을 저장함
                 .username(String.valueOf(member.getId()))

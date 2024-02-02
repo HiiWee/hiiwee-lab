@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -12,6 +13,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 /**
  * 인가 예외가 발생하면 예외 이후 동작으로 handle()메서드를 실행 시킵니다.
  */
+@Slf4j
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper mapper;
@@ -23,6 +25,8 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(final HttpServletRequest request, final HttpServletResponse response,
                        final AccessDeniedException accessDeniedException) throws IOException {
+        log.warn("RestAccessDeniedHandler: 해당 사용자는 접근할 수 없습니다.", accessDeniedException);
+
         HashMap<String, Object> responseBody = new HashMap<>();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
