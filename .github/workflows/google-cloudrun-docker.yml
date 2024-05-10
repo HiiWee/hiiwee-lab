@@ -92,9 +92,7 @@ jobs:
         env:
           GOOGLE_AR_CLIENT_SECRET: ${{ secrets.GOOGLE_AR_CLIENT_SECRET }}
           SPRING_PROFILES_ACTIVE: dev
-        run: |
-          ./gradlew wrapper --gradle-version 8.4 
-          ./gradlew jib
+        run: ./gradlew jib
       # END - Docker auth and build
 
       - name: Deploy to Cloud Run
