@@ -48,6 +48,9 @@ on:
   push:
     branches: [ "master" ]
 
+defaults:
+  run:
+    working-directory: 'github-action-jib-to-google-cloud-run'
 env:
   PROJECT_ID: one-hour-project-422510 # TODO: update Google Cloud project id
   SERVICE: one-hour-dev # TODO: update Cloud Run service name
