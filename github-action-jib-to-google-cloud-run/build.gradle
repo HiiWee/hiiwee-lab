@@ -21,9 +21,9 @@ jib {
         }
     }
     container {
-        environment = [
-                "SPRING_PROFILE_ACTIVE": System.getenv("SPRING_PROFILES_ACTIVE")
-        ]
+//        environment = [
+//                "SPRING_PROFILE_ACTIVE": System.getenv("SPRING_PROFILES_ACTIVE")
+//        ]
         jvmFlags = ['-Xms512m', '-Xmx512m']
     }
 }
