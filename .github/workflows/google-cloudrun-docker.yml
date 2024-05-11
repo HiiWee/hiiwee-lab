@@ -53,7 +53,7 @@ defaults:
     working-directory: 'github-action-jib-to-google-cloud-run'
 env:
   PROJECT_ID: one-hour-project-422510 # TODO: update Google Cloud project id
-  SERVICE: one-hour-dev # TODO: update Cloud Run service name
+  SERVICE: one-hour-server # TODO: update Cloud Run service name
   REGION: asia-northeast3 # TODO: update Cloud Run service region
 
 jobs:
@@ -108,7 +108,7 @@ jobs:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
           # NOTE: If using a pre-built image, update the image name here
-          image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/one-hour-server:latest
+          image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.SERVICE }}:latest
 
       # If required, use the Cloud Run url output in later steps
       - name: Show Output
