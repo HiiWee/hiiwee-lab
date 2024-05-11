@@ -15,11 +15,21 @@ jib {
     }
     to {
         image = 'asia-northeast3-docker.pkg.dev/one-hour-project-422510/one-hour-cloud-run-deploy-server/one-hour-project:latest'
+        auth {
+            username = '_json_key'
+            password = System.getenv("GOOGLE_AR_CLIENT_SECRET")
+        }
+    }
+    container {
+        environment = [
+                "SPRING_PROFILE_ACTIVE": System.getenv("SPRING_PROFILES_ACTIVE")
+        ]
+        jvmFlags = ['-Xms512m', '-Xmx512m']
     }
 }
 
 java {
-    sourceCompatibility = '17'
+    sourceCompatibility = '21'
 }
 
 repositories {

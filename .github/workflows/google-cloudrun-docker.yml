@@ -97,7 +97,7 @@ jobs:
       - name: Build and Push Container using Jib
         env:
           GOOGLE_AR_CLIENT_SECRET: ${{ secrets.GOOGLE_AR_CLIENT_SECRET }}
-          SPRING_PROFILES_ACTIVE: dev
+          # SPRING_PROFILES_ACTIVE: dev
         run: ./gradlew jib
       # END - Docker auth and build
 
