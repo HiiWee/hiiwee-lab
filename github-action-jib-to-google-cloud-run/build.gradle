@@ -14,7 +14,7 @@ jib {
         image = 'openjdk:21-jdk'
     }
     to {
-        image = 'asia-northeast3-docker.pkg.dev/one-hour-project-422510/one-hour-cloud-run-deploy-server/one-hour-project:latest'
+        image = 'asia-northeast3-docker.pkg.dev/one-hour-project-422510/one-hour-cloud-run-deploy-server/one-hour-server:latest'
         auth {
             username = '_json_key'
             password = System.getenv("GOOGLE_AR_CLIENT_SECRET")
