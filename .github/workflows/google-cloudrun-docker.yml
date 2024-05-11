@@ -108,7 +108,7 @@ jobs:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
           # NOTE: If using a pre-built image, update the image name here
-          image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.SERVICE }}:latest
+          image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/one-hour-cloud-run-deploy-server/${{ env.SERVICE }}:latest
 
       # If required, use the Cloud Run url output in later steps
       - name: Show Output
