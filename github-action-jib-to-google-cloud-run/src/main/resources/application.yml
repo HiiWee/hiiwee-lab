@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: github-action-jib-to-google-cloud-run
+  profiles:
+    active: dev
